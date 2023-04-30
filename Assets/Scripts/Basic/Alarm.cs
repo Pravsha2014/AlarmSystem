@@ -1,10 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(House))]
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarm;
 
+    private readonly float _maxAlarmVolume = 1;
     private readonly float _minAlarmVolume = 0;
     private readonly float _changeAlarmVolumeTime = 0.01f;
     private readonly float _waitingTimeInSeconds = 0.1f;
@@ -29,9 +31,9 @@ public class Alarm : MonoBehaviour
             StopCoroutine(_coroutine);
         }
 
-        int targetValue = isChanged ? 1 : 0;
+        float volume = isChanged ? _maxAlarmVolume : _minAlarmVolume;
 
-        _coroutine = StartCoroutine(ChangeVolume(targetValue));
+        _coroutine = StartCoroutine(ChangeVolume(volume));
     }
 
     private IEnumerator ChangeVolume(float targetVolume)
